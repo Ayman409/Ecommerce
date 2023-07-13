@@ -33,12 +33,7 @@ class FavouriteChangedState extends FavouriteState {
   // });
 }
 
-class ChangeFavouriteSuccesState extends FavouriteState {
-  final FavoritesModel model;
-  ChangeFavouriteSuccesState({
-    required this.model,
-  });
-}
+class ChangeFavouriteSuccesState extends FavouriteState {}
 
 class FavouriteChangedErrorState extends FavouriteState {
   final String failMsg;

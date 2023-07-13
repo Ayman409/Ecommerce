@@ -1,9 +1,8 @@
- 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/colors.dart';
-import '../../home/logic/home_cubit.dart';
+
 import '../data/models/favourites_model.dart';
 import '../logic/favourite_cubit.dart';
 
@@ -19,7 +18,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   @override
   void initState() {
     super.initState();
-    //context.read<FavouriteCubit>().getFavoriteData();
+    context.read<FavouriteCubit>().getFavoriteData();
   }
 
   bool isChangeFavorite = false;
@@ -27,9 +26,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: BlocConsumer<FavouriteCubit, FavouriteState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is FavouriteLoadingState){
+           const Center(child: CircularProgressIndicator());
+        }
+      },
       builder: (context, state) {
-        if (context.read<FavouriteCubit>().favoritesModel != null) {
+        if (context.read<FavouriteCubit>().favoritesModel != null && context.read<FavouriteCubit>().favorites.isNotEmpty && state
+            is FavouriteLoadedSuccessState) {
           final favoriteCubit = context.read<FavouriteCubit>();
           final favoriteData = favoriteCubit.favoritesModel!.data!.favoriteData;
           final favoriteMap = favoriteCubit.favorites;
@@ -102,12 +106,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                       IconButton(
                                         icon: const Icon(Icons.favorite,
                                             color: Colors.red),
-                                        onPressed: () async {
+                                        onPressed: () {
                                           favoriteCubit.changeFavourite(
-                                              product: favoriteData![index].product!);
-                                         await context
-                                              .read<HomeCubit>()
-                                              .getHomeData();
+                                              product: favoriteData![index]
+                                                  .product!);
+                                          //  await context
+                                          //       .read<FavouriteCubit>()
+                                          //       .getFavoriteData();
                                           // await  context.read<HomeCubit>().getHomeData();
                                           // await context
                                           //     .read<HomeCubit>()
@@ -115,8 +120,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                           //         productId: favoriteData[index]
                                           //             .product!
                                           //             .id!);
-
-                                         
                                         },
                                       )
                                     ],
@@ -133,8 +136,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               ),
             ),
           );
+        } else if (context.read<FavouriteCubit>().favorites.isEmpty) {
+          return const Center(child: Text('Add some items to favrite'));
+        } else {
+          return  const Center(child: CircularProgressIndicator());
         }
-        return const Center(child: CircularProgressIndicator());
       },
     ));
   }

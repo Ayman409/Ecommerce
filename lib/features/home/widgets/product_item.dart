@@ -1,5 +1,5 @@
 import 'package:crystal_mind/features/favourite/logic/favourite_cubit.dart';
-import 'package:crystal_mind/features/home/logic/home_cubit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -97,29 +97,36 @@ class _ProductItemState extends State<ProductItem> {
                                   decoration: TextDecoration.lineThrough),
                             ),
                           const Spacer(),
-                          IconButton(
-                            icon: Icon(
-                              Icons.favorite,
-                              color: context
+                          BlocBuilder<FavouriteCubit, FavouriteState>(
+                            builder: (context, state) {
+                                  
+                            return IconButton(
+                                icon: Icon(
+                                 Icons.favorite,
+                                  color: context
+                                          .read<FavouriteCubit>()
+                                          .favorites
+                                          .containsKey(
+                                              widget.products![index].id)
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                onPressed: () async {
+                                  await context
                                       .read<FavouriteCubit>()
-                                      .favorites
-                                      .containsKey(widget.products![index].id)
-                                  ? Colors.red
-                                  : Colors.grey,
-                            ),
-                            onPressed: () async {
-                              await context
-                                  .read<FavouriteCubit>()
-                                  .changeFavouriteById(
-                                      productId: widget.products![index].id!);
-                              setState(() {});
-                              // ignore: use_build_context_synchronously
-                              // context.read<FavouriteCubit>().removeFromFavorite(
-                              //     productId: widget.products![index].id!);
-                              // ignore: use_build_context_synchronously
-                              await context
-                                  .read<FavouriteCubit>()
-                                  .getFavoriteData();
+                                      .changeFavouriteById(
+                                          productId:
+                                              widget.products![index].id!);
+                                  // setState(() {});
+                                  // ignore: use_build_context_synchronously
+                                  // context.read<FavouriteCubit>().removeFromFavorite(
+                                  //     productId: widget.products![index].id!);
+                                  // ignore: use_build_context_synchronously
+                                  context
+                                      .read<FavouriteCubit>()
+                                      .getFavoriteData();
+                                },
+                              );
                             },
                           )
                         ],

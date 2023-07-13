@@ -16,7 +16,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
   FavoritesModel? _changeFavoriteModel;
   FavoritesModel? get changeFavoriteModel => _changeFavoriteModel;
 
-  Map<int, dynamic> favorites = {};
+  Map<dynamic, dynamic> favorites = {};
 
   getFavoriteData() async {
     emit(FavouriteLoadingState());
@@ -43,7 +43,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
   void changeFavourite({required Product product}) async {
     //fake delete from favorite
     if (favorites.containsKey(product.id)) favorites.remove(product.id);
-    emit(FavouriteChangedState());
+    emit(ChangeFavouriteSuccesState());
 
     final either =
         await favoriteRepo.addOrDeleteFavoritesItems(productId: product.id!);
@@ -57,16 +57,17 @@ class FavouriteCubit extends Cubit<FavouriteState> {
         // if statues not != true change favorite succes
         favorites.remove(product.id);
       }
-      emit(ChangeFavouriteSuccesState(model: changeFavoriteModel));
+      getFavoriteData();
+      emit(ChangeFavouriteSuccesState());
     });
   }
 
-  changeFavouriteById({required int productId}) async {
+  changeFavouriteById({required dynamic productId}) async {
     //fake delete from favorite
     if (favorites.containsKey(productId)) {
       favorites.remove(productId);
     } else {
-      favorites.addAll({productId: productId });
+      favorites.addAll({productId: productId});
     }
     emit(FavouriteChangedState());
 
@@ -82,7 +83,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
         // if statues not != true change favorite succes
         favorites.remove(productId);
       }
-      emit(ChangeFavouriteSuccesState(model: changeFavoriteModel));
+      emit(ChangeFavouriteSuccesState());
     });
   }
 
