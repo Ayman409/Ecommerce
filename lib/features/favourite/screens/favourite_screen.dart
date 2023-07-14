@@ -33,7 +33,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       },
       builder: (context, state) {
         if (context.read<FavouriteCubit>().favoritesModel != null && context.read<FavouriteCubit>().favorites.isNotEmpty && state
-            is FavouriteLoadedSuccessState) {
+            is FavouriteLoadedSuccessState ) {
           final favoriteCubit = context.read<FavouriteCubit>();
           final favoriteData = favoriteCubit.favoritesModel!.data!.favoriteData;
           final favoriteMap = favoriteCubit.favorites;
@@ -106,8 +106,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                       IconButton(
                                         icon: const Icon(Icons.favorite,
                                             color: Colors.red),
-                                        onPressed: () {
-                                          favoriteCubit.changeFavourite(
+                                        onPressed: ()async {
+                                        await favoriteCubit.changeFavourite(
                                               product: favoriteData![index]
                                                   .product!);
                                           //  await context

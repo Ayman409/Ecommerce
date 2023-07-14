@@ -40,7 +40,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     });
   }
 
-  void changeFavourite({required Product product}) async {
+    changeFavourite({required Product product}) async {
     //fake delete from favorite
     if (favorites.containsKey(product.id)) favorites.remove(product.id);
     emit(ChangeFavouriteSuccesState());
@@ -57,7 +57,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
         // if statues not != true change favorite succes
         favorites.remove(product.id);
       }
-      getFavoriteData();
+     getFavoriteData();
       emit(ChangeFavouriteSuccesState());
     });
   }
