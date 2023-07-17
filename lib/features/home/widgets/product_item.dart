@@ -122,9 +122,9 @@ class _ProductItemState extends State<ProductItem> {
                                   // context.read<FavouriteCubit>().removeFromFavorite(
                                   //     productId: widget.products![index].id!);
                                   // ignore: use_build_context_synchronously
-                                  context
-                                      .read<FavouriteCubit>()
-                                      .getFavoriteData();
+                                  // context
+                                  //     .read<FavouriteCubit>()
+                                  //     .getFavoriteData();
                                 },
                               );
                             },

@@ -80,9 +80,10 @@ class FavouriteCubit extends Cubit<FavouriteState> {
       _changeFavoriteModel = changeFavoriteModel;
 
       if (!changeFavoriteModel.status!) {
-        // if statues not != true change favorite succes
+        // if statues  != true change favorite succes
         favorites.remove(productId);
       }
+          getFavoriteData();
       emit(ChangeFavouriteSuccesState());
     });
   }
